@@ -54,10 +54,10 @@ class Window(Gtk.Window):
         self.camera.capture_preview(file, self.context)
         data = file.get_data_and_size()
         data = memoryview(data)
-        stream = Gio.MemoryInputStream.new()
-        stream.add_data(data)
-        pixbuf = GdkPixbuf.Pixbuf.new_from_stream(stream)
-        self.set_pixbuf(pixbuf)
+        loader = GdkPixbuf.PixbufLoader.new()
+        loader.write(data)
+        self.set_pixbuf(loader.get_pixbuf())
+        loader.close()
         return True
 
     def capture(self, a, b):
